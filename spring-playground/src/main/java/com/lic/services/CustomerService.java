@@ -18,9 +18,10 @@ public class CustomerService {
 	public List<Customer> getCustomers(){
 		List<Customer> list=new ArrayList<Customer>();
 		
-				list.add(new Customer(1L,"James Bond"));
-				list.add(new Customer(2L,"Sheldon Cooper"));
-				list.add(new Customer(3L,"Elon Musk"));
+				list.add(
+						new Customer(1L,"James Bond","password123"));
+				list.add(new Customer(2L,"Sheldon Cooper","password321"));
+				list.add(new Customer(3L,"Elon Musk","password432"));
 				
 		
 		return list;

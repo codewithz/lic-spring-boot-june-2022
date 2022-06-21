@@ -5,7 +5,10 @@ import javax.persistence.*;
 //Represents the Java class
 @Entity(name="Student")
 //Represents the db table
-@Table(name="student")
+@Table(name="student",
+    uniqueConstraints = {
+        @UniqueConstraint(name="student_email_unique",columnNames = {"email"}),
+    })
 public class Student {
     //Representign Primary Key
     @Id

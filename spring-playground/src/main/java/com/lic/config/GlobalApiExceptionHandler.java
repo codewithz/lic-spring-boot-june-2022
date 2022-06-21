@@ -14,7 +14,9 @@ public class GlobalApiExceptionHandler {
     @ExceptionHandler(value={ResponseStatusException.class})
     public ResponseEntity<ApiExceptionPayload>
     handleApiException(ResponseStatusException exception, WebRequest request){
-        String path=request.getDescription(false).replace("uri=","");
+        String path=request.
+                getDescription(false).
+                replace("uri=","");
 
 //        1. Create a Payload with exception details
 

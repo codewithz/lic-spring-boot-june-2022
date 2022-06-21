@@ -27,8 +27,8 @@ public class CustomerController {
 	}
 
 	@GetMapping("/{customerId}")
-	public ResponseEntity<ApiSuccessPayload> getCustomer(@PathVariable Long customerId) {
-
+	public ResponseEntity<ApiSuccessPayload> getCustomer(@PathVariable Long customerId,@RequestParam String category) {
+		System.out.println(category);
 		Customer c=customerService.getCustomerById(customerId);
 		HttpStatus status=HttpStatus.OK;
 		ApiSuccessPayload payload=ApiSuccessPayload.build(c,"Customer Found",status);
@@ -54,6 +54,8 @@ public class CustomerController {
 		return response;
 
 	}
+
+
 	
 	
 }

@@ -102,6 +102,14 @@ public class SpringPlaygroundApplication {
 					findStudentsByFirstNameOrAgeGreaterThanEqual("Alex",21);
 
 			list1.forEach(System.out::println);
+
+			System.out.println("----------- QUERIES----------------------------");
+			repository.selectStudentByEmail("alex.holmes@gmail.com")
+					.ifPresentOrElse(
+							System.out::println,
+							()-> System.out.println("Not Found")
+					);
+
 		};
 	}
 

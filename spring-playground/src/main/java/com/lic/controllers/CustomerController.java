@@ -3,10 +3,7 @@ package com.lic.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.lic.model.Customer;
 import com.lic.services.CustomerService;
@@ -35,6 +32,12 @@ public class CustomerController {
 	public List<Customer> getCustomers(){
 		List<Customer> list=customerService.getCustomers();
 		return list;
+	}
+
+	@PostMapping
+	public String addCustomer(@RequestBody Customer customer){
+		System.out.println(customer);
+		return "OK";
 	}
 	
 	

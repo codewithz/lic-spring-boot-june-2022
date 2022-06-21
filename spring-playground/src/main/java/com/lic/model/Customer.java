@@ -3,10 +3,12 @@ package com.lic.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
+
 public class Customer {
 	
 	private Long id;
-
+	@NotBlank
 	private String name;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

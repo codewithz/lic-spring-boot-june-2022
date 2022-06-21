@@ -16,8 +16,6 @@ public class Customer {
 	@NotBlank(message = "Email cannot be blank")
 	@Email
 	private String email;
-	
-
 	public Customer() {
 		super();
 		// TODO Auto-generated constructor stub

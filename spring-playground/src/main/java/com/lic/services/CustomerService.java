@@ -3,16 +3,24 @@ package com.lic.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lic.model.Customer;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CustomerService {
 
 	public Customer getCustomerById(Long id) {
-		Customer c=new Customer(id,"James Service Bond");
-		return c;
+		return getCustomers()
+				.stream()
+				.filter(customer -> customer.getId().equals(id))
+				.findFirst()
+				.orElseThrow(()->
+						new ResponseStatusException(
+								HttpStatus.NOT_FOUND,
+								"Customer with id "+id+ " is not found"));
 	}
 	
 	public List<Customer> getCustomers(){

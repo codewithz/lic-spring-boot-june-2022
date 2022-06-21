@@ -17,7 +17,7 @@ public class ApiExceptionPayload {
     }
 
     public ApiExceptionPayload(String message, int status, String httpStatus, boolean success, boolean error, LocalDateTime timestamp, String path) {
-        this.message = message;
+        this.message = formatMessage(message);
         this.status = status;
         this.httpStatus = httpStatus;
         this.success = success;
@@ -31,7 +31,7 @@ public class ApiExceptionPayload {
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = formatMessage(message);
     }
 
     public int getStatus() {
@@ -93,5 +93,13 @@ public class ApiExceptionPayload {
                 ", timestamp=" + timestamp +
                 ", path='" + path + '\'' +
                 '}';
+    }
+
+    private String formatMessage(String message){
+
+        int firstDoubleQuotes=message.indexOf("\"");
+        message=message.substring(firstDoubleQuotes+1);
+        message=message.replace("\"","");
+        return message;
     }
 }

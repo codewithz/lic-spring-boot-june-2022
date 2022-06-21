@@ -3,6 +3,7 @@ package com.lic.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class Customer {
@@ -10,10 +11,10 @@ public class Customer {
 	private Long id;
 	@NotBlank(message = "Name cannot be empty")
 	private String name;
-
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
-
+	@NotBlank(message = "Email cannot be blank")
+	@Email
 	private String email;
 	
 

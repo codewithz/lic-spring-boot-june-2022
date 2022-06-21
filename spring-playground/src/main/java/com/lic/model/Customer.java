@@ -30,10 +30,12 @@ public class Customer {
 		this.name = name;
 		this.password = password;
 	}
+	//You want to pass something with a different name
 	@JsonProperty("customer_id")
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}

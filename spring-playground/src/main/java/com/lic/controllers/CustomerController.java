@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.lic.model.Customer;
 import com.lic.services.CustomerService;
 
+import javax.validation.Valid;
 
 
 @RestController
@@ -35,7 +36,7 @@ public class CustomerController {
 	}
 
 	@PostMapping
-	public String addCustomer(@RequestBody Customer customer){
+	public String addCustomer(@Valid  @RequestBody Customer customer){
 		System.out.println(customer);
 		return "OK";
 	}

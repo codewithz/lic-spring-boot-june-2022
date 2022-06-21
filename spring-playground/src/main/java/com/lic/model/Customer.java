@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class Customer {
 	
 	private Long id;
-	@NotBlank
+	@NotBlank(message = "Name cannot be empty")
 	private String name;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

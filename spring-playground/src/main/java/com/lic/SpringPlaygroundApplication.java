@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -28,7 +30,12 @@ public class SpringPlaygroundApplication {
 		return args -> {
 		generateRandomStudents(repository);
 			System.out.println("-------------------------------");
-			sorting(repository);
+//			sorting(repository);
+
+			PageRequest pageRequest=PageRequest.of(4,50);
+			Page<Student> page=repository.findAll(pageRequest);
+			System.out.println(page);
+			repository.findAll(pageRequest).toList().forEach(System.out::println);
 
 		};
 	}
@@ -36,7 +43,7 @@ public class SpringPlaygroundApplication {
 	private void generateRandomStudents(StudentRepository repository){
 		Faker faker=new Faker();
 
-		for (int i=1;i<=30;i++){
+		for (int i=1;i<=300;i++){
 			String firstName=faker.name().firstName();
 			String lastName=faker.name().lastName();
 			String email=String.format("%s.%s@gmail.com",firstName,lastName);

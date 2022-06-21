@@ -81,6 +81,27 @@ public class SpringPlaygroundApplication {
 				repository.save(tomCopy);
 			}
 
+			System.out.println("------------------------------Custom Queries-------------------------");
+
+			repository.findStudentByEmail("thomas.smith@gmail.com")
+					.ifPresentOrElse(
+							System.out::println,
+							()-> System.out.println("Not Found")
+					);
+
+			System.out.println("-----------------------------------------");
+
+			List<Student> list=repository.
+					findStudentsByFirstNameAndAgeGreaterThanEqual("Alex",21);
+
+			list.forEach(System.out::println);
+
+			System.out.println("-----------------------------------------");
+
+			List<Student> list1=repository.
+					findStudentsByFirstNameOrAgeGreaterThanEqual("Alex",21);
+
+			list1.forEach(System.out::println);
 		};
 	}
 

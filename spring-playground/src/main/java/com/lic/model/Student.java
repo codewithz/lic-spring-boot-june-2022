@@ -1,11 +1,25 @@
 package com.lic.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+//Represents the Java class
+@Entity(name="Student")
+//Represents the db table
+@Table(name="student")
 public class Student {
+    //Representign Primary Key
     @Id
+    //For creating a sequence for table student
+    @SequenceGenerator(
+            name="student_sequence",
+            sequenceName = "student_sequence",
+            allocationSize = 1
+    )
+    //For getting the generated value
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "student_sequence"
+    )
     private Long id;
     private String firstName;
     private String lastName;

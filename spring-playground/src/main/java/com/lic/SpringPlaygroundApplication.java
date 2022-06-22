@@ -1,10 +1,7 @@
 package com.lic;
 
 import com.github.javafaker.Faker;
-import com.lic.model.Book;
-import com.lic.model.Course;
-import com.lic.model.Student;
-import com.lic.model.StudentIdCard;
+import com.lic.model.*;
 import com.lic.repository.CourseRepository;
 import com.lic.repository.StudentIdCardRepository;
 import com.lic.repository.StudentRepository;
@@ -41,12 +38,6 @@ public class SpringPlaygroundApplication {
 
 			generateRandomCourses(courseRepository);
 
-			Optional<Course> optional1=courseRepository.findById(1L);
-			Course c1=optional1.isPresent()?optional1.get():null;
-
-			Optional<Course> optional2=courseRepository.findById(9L);
-			Course c2=optional2.isPresent()?optional2.get():null;
-
 			Faker faker=new Faker();
 
 
@@ -70,8 +61,6 @@ public class SpringPlaygroundApplication {
 			student.addBook(book2);
 			student.addBook(book3);
 
-			student.enrollToCourse(c1);
-			student.enrollToCourse(c2);
 
 			studentRepository.save(student);
 
@@ -83,11 +72,25 @@ public class SpringPlaygroundApplication {
 				books.forEach(b->{
 					System.out.println(b.getBookName()+"-"+b.getCreatedAt());
 				});
-				List<Course> courses=student1.getCourses();
-				courses.forEach(c->{
-					System.out.println(c.getName()+"--"+c.getDepartment());
-				});
+
 			});
+			System.out.println("----------------- Updating the student with course-------");
+			Optional<Student> optional2=studentRepository.findById(1L);
+			Student student2=optional2.isPresent()?optional2.get():null;
+
+			Optional<Course> optionalForCourse=courseRepository.findById(10L);
+			Course course=optionalForCourse.isPresent()?optionalForCourse.get():null;
+
+			Enrollment e=new Enrollment(
+					new EnrollmentId(student2.getId(),course.getId()),
+							student2,course,
+							LocalDateTime.now()
+
+			);
+			student.addEnrollment(e);
+
+			studentRepository.save(student);
+
 
 
 

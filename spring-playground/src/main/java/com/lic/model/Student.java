@@ -52,6 +52,13 @@ public class Student {
     )
     private Integer age;
 
+    @OneToOne(
+            mappedBy = "student",
+            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
+            orphanRemoval = true
+
+    )
+    private StudentIdCard studentIdCard;
 
     public Student() {
     }
@@ -104,6 +111,16 @@ public class Student {
         this.age = age;
     }
 
+
+
+    public void setStudentIdCard(StudentIdCard studentIdCard) {
+        this.studentIdCard = studentIdCard;
+    }
+
+    public StudentIdCard getStudentIdCard() {
+        return studentIdCard;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -112,6 +129,9 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+
+
+
                 '}';
     }
 }

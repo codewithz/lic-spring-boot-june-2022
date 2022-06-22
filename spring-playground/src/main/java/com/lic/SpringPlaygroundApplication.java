@@ -38,13 +38,15 @@ public class SpringPlaygroundApplication {
 			String lastName=faker.name().lastName();
 			String email=String.format("%s.%s@gmail.com",firstName,lastName);
 			int age=faker.number().numberBetween(18,60);
-			Student s=new Student(firstName,lastName,email,age);
+			Student student=new Student(firstName,lastName,email,age);
 
-			StudentIdCard studentIdCard=new StudentIdCard("123456789",s);
+			StudentIdCard studentIdCard=new StudentIdCard("123456789",student);
 
-			System.out.println("Saving the Id Card");
+			System.out.println("Saving the Student with an Id Card");
 
-			studentIdCardRepository.save(studentIdCard);
+			student.setStudentIdCard(studentIdCard);
+			studentRepository.save(student);
+//			studentIdCardRepository.save(studentIdCard);
 
 			System.out.println("--- Fetching the Student Id Card Record ---------");
 
@@ -55,7 +57,13 @@ public class SpringPlaygroundApplication {
 			System.out.println("------------------Fetching Student Id---------------------");
 
 			studentRepository.findById(1L)
-					.ifPresent(System.out::println);
+					.ifPresent(student1 -> {
+						System.out.println(student1);
+						System.out.println(student1.getStudentIdCard());
+					});
+
+			System.out.println("------------ Deleting Student--------------");
+			studentRepository.deleteById(1L);
 
 
 		};

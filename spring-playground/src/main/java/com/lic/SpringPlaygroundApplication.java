@@ -34,40 +34,6 @@ public class SpringPlaygroundApplication {
 	CommandLineRunner commandLineRunner(StudentRepository studentRepository,
 										StudentIdCardRepository studentIdCardRepository){
 		return args -> {
-			Faker faker=new Faker();
-
-
-			String firstName=faker.name().firstName();
-			String lastName=faker.name().lastName();
-			String email=String.format("%s.%s@gmail.com",firstName,lastName);
-			int age=faker.number().numberBetween(18,60);
-
-			System.out.println("-------Saving Student ------------");
-			Student student=new Student(firstName,lastName,email,age);
-
-			StudentIdCard studentIdCard=new StudentIdCard("123456789",student);
-
-			Book book1=new Book("Clean Code", LocalDateTime.now().minusDays(4));
-			Book book2=new Book("Head First Java",LocalDateTime.now());
-			Book book3=new Book("Master Spring Data JPA",LocalDateTime.now().minusMonths(6));
-
-			student.setStudentIdCard(studentIdCard);
-
-			student.addBook(book1);
-			student.addBook(book2);
-			student.addBook(book3);
-
-			studentRepository.save(student);
-
-			System.out.println("----------- Fetch the student object----------------");
-
-			studentRepository.findById(1L).ifPresent(student1 -> {
-				System.out.println("Lazy Loading of Books.......");
-				List<Book> books=student1.getBooks();
-				books.forEach(b->{
-					System.out.println(b.getBookName()+"-"+b.getCreatedAt());
-				});
-			});
 
 
 
@@ -109,6 +75,44 @@ public class SpringPlaygroundApplication {
 		System.out.println("------------ Deleting Student--------------");
 		studentRepository.deleteById(1L);
 
+
+	}
+
+	private void testOneToMany(StudentRepository studentRepository){
+		Faker faker=new Faker();
+
+
+		String firstName=faker.name().firstName();
+		String lastName=faker.name().lastName();
+		String email=String.format("%s.%s@gmail.com",firstName,lastName);
+		int age=faker.number().numberBetween(18,60);
+
+		System.out.println("-------Saving Student ------------");
+		Student student=new Student(firstName,lastName,email,age);
+
+		StudentIdCard studentIdCard=new StudentIdCard("123456789",student);
+
+		Book book1=new Book("Clean Code", LocalDateTime.now().minusDays(4));
+		Book book2=new Book("Head First Java",LocalDateTime.now());
+		Book book3=new Book("Master Spring Data JPA",LocalDateTime.now().minusMonths(6));
+
+		student.setStudentIdCard(studentIdCard);
+
+		student.addBook(book1);
+		student.addBook(book2);
+		student.addBook(book3);
+
+		studentRepository.save(student);
+
+		System.out.println("----------- Fetch the student object----------------");
+
+		studentRepository.findById(1L).ifPresent(student1 -> {
+			System.out.println("Lazy Loading of Books.......");
+			List<Book> books=student1.getBooks();
+			books.forEach(b->{
+				System.out.println(b.getBookName()+"-"+b.getCreatedAt());
+			});
+		});
 
 	}
 	private void generateRandomStudents(StudentRepository repository){

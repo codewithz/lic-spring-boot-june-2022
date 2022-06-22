@@ -31,8 +31,8 @@ public class StudentIdCard {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            name="student_id",
-            referencedColumnName ="id"
+            name="student_id", //This is current table's foriegn key col name
+            referencedColumnName ="id" //This is parent table col name
     )
     private Student student;
 

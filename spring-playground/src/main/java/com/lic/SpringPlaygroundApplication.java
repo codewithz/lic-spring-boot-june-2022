@@ -2,6 +2,8 @@ package com.lic;
 
 import com.github.javafaker.Faker;
 import com.lic.model.Student;
+import com.lic.model.StudentIdCard;
+import com.lic.repository.StudentIdCardRepository;
 import com.lic.repository.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,16 +28,24 @@ public class SpringPlaygroundApplication {
 
 	}
 	@Bean
-	CommandLineRunner commandLineRunner(StudentRepository repository){
+	CommandLineRunner commandLineRunner(StudentRepository repository,
+										StudentIdCardRepository studentIdCardRepository){
 		return args -> {
-		generateRandomStudents(repository);
-			System.out.println("-------------------------------");
-//			sorting(repository);
+			Faker faker=new Faker();
 
-			PageRequest pageRequest=PageRequest.of(4,50);
-			Page<Student> page=repository.findAll(pageRequest);
-			System.out.println(page);
-			repository.findAll(pageRequest).toList().forEach(System.out::println);
+
+			String firstName=faker.name().firstName();
+			String lastName=faker.name().lastName();
+			String email=String.format("%s.%s@gmail.com",firstName,lastName);
+			int age=faker.number().numberBetween(18,60);
+			Student s=new Student(firstName,lastName,email,age);
+
+			StudentIdCard studentIdCard=new StudentIdCard("123456789",s);
+
+			System.out.println("Saving the Id Card");
+
+			studentIdCardRepository.save(studentIdCard);
+
 
 		};
 	}

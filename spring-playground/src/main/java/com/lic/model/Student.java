@@ -72,7 +72,7 @@ public class Student {
     private List<Book> books=new ArrayList<>();
 
     @ManyToMany(
-            cascade = {CascadeType.PERSIST,CascadeType.REMOVE}
+            cascade = {CascadeType.MERGE}
     )
     @JoinTable(
             name="enrollment",

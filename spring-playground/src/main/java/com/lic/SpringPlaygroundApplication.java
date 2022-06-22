@@ -2,8 +2,10 @@ package com.lic;
 
 import com.github.javafaker.Faker;
 import com.lic.model.Book;
+import com.lic.model.Course;
 import com.lic.model.Student;
 import com.lic.model.StudentIdCard;
+import com.lic.repository.CourseRepository;
 import com.lic.repository.StudentIdCardRepository;
 import com.lic.repository.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -32,17 +34,87 @@ public class SpringPlaygroundApplication {
 	}
 	@Bean
 	CommandLineRunner commandLineRunner(StudentRepository studentRepository,
-										StudentIdCardRepository studentIdCardRepository){
+										StudentIdCardRepository studentIdCardRepository,
+										CourseRepository courseRepository
+										){
 		return args -> {
+
+			generateRandomCourses(courseRepository);
+
+			Optional<Course> optional1=courseRepository.findById(1L);
+			Course c1=optional1.isPresent()?optional1.get():null;
+
+			Optional<Course> optional2=courseRepository.findById(9L);
+			Course c2=optional2.isPresent()?optional2.get():null;
+
+			Faker faker=new Faker();
+
+
+			String firstName=faker.name().firstName();
+			String lastName=faker.name().lastName();
+			String email=String.format("%s.%s@gmail.com",firstName,lastName);
+			int age=faker.number().numberBetween(18,60);
+
+			System.out.println("-------Saving Student ------------");
+			Student student=new Student(firstName,lastName,email,age);
+
+			StudentIdCard studentIdCard=new StudentIdCard("123456789",student);
+
+			Book book1=new Book("Clean Code", LocalDateTime.now().minusDays(4));
+			Book book2=new Book("Head First Java",LocalDateTime.now());
+			Book book3=new Book("Master Spring Data JPA",LocalDateTime.now().minusMonths(6));
+
+			student.setStudentIdCard(studentIdCard);
+
+			student.addBook(book1);
+			student.addBook(book2);
+			student.addBook(book3);
+
+			student.enrollToCourse(c1);
+			student.enrollToCourse(c2);
+
+			studentRepository.save(student);
+
+			System.out.println("----------- Fetch the student object----------------");
+
+			studentRepository.findById(1L).ifPresent(student1 -> {
+				System.out.println("Lazy Loading of Books.......");
+				List<Book> books=student1.getBooks();
+				books.forEach(b->{
+					System.out.println(b.getBookName()+"-"+b.getCreatedAt());
+				});
+				List<Course> courses=student1.getCourses();
+				courses.forEach(c->{
+					System.out.println(c.getName()+"--"+c.getDepartment());
+				});
+			});
+
+
+
+
+
 
 
 
 		};
 	}
 
-	private void testOneToOneMapping(StudentRepository studentRepository,StudentIdCardRepository studentIdCardRepository){
+	private void generateRandomCourses(CourseRepository courseRepository){
+
 		Faker faker=new Faker();
 
+		for(int i=1;i<=20;i++){
+			String department=i%2==0?"IT":"Finance";
+			String courseName=faker.educator().course();
+
+			Course course=new Course(courseName,department);
+			courseRepository.save(course);
+		}
+
+	}
+
+	private void testOneToOneMapping(StudentRepository studentRepository,StudentIdCardRepository studentIdCardRepository){
+		Faker faker=new Faker();
 
 		String firstName=faker.name().firstName();
 		String lastName=faker.name().lastName();

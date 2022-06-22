@@ -28,7 +28,7 @@ public class SpringPlaygroundApplication {
 
 	}
 	@Bean
-	CommandLineRunner commandLineRunner(StudentRepository repository,
+	CommandLineRunner commandLineRunner(StudentRepository studentRepository,
 										StudentIdCardRepository studentIdCardRepository){
 		return args -> {
 			Faker faker=new Faker();
@@ -45,6 +45,17 @@ public class SpringPlaygroundApplication {
 			System.out.println("Saving the Id Card");
 
 			studentIdCardRepository.save(studentIdCard);
+
+			System.out.println("--- Fetching the Student Id Card Record ---------");
+
+			studentIdCardRepository.findById(1L).
+					ifPresent(System.out::println);
+
+
+			System.out.println("------------------Fetching Student Id---------------------");
+
+			studentRepository.findById(1L)
+					.ifPresent(System.out::println);
 
 
 		};

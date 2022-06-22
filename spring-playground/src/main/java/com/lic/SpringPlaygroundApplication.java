@@ -1,6 +1,7 @@
 package com.lic;
 
 import com.github.javafaker.Faker;
+import com.lic.model.Book;
 import com.lic.model.Student;
 import com.lic.model.StudentIdCard;
 import com.lic.repository.StudentIdCardRepository;
@@ -16,6 +17,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,37 +41,76 @@ public class SpringPlaygroundApplication {
 			String lastName=faker.name().lastName();
 			String email=String.format("%s.%s@gmail.com",firstName,lastName);
 			int age=faker.number().numberBetween(18,60);
+
+			System.out.println("-------Saving Student ------------");
 			Student student=new Student(firstName,lastName,email,age);
 
 			StudentIdCard studentIdCard=new StudentIdCard("123456789",student);
 
-			System.out.println("Saving the Student with an Id Card");
+			Book book1=new Book("Clean Code", LocalDateTime.now().minusDays(4));
+			Book book2=new Book("Head First Java",LocalDateTime.now());
+			Book book3=new Book("Master Spring Data JPA",LocalDateTime.now().minusMonths(6));
 
 			student.setStudentIdCard(studentIdCard);
+
+			student.addBook(book1);
+			student.addBook(book2);
+			student.addBook(book3);
+
 			studentRepository.save(student);
-//			studentIdCardRepository.save(studentIdCard);
 
-			System.out.println("--- Fetching the Student Id Card Record ---------");
+			System.out.println("----------- Fetch the student object----------------");
 
-			studentIdCardRepository.findById(1L).
-					ifPresent(System.out::println);
+			studentRepository.findById(1L).ifPresent(student1 -> {
+				System.out.println("Lazy Loading of Books.......");
+				List<Book> books=student1.getBooks();
+				books.forEach(b->{
+					System.out.println(b.getBookName()+"-"+b.getCreatedAt());
+				});
+			});
 
-
-			System.out.println("------------------Fetching Student Id---------------------");
-
-			studentRepository.findById(1L)
-					.ifPresent(student1 -> {
-						System.out.println(student1);
-						System.out.println(student1.getStudentIdCard());
-					});
-
-			System.out.println("------------ Deleting Student--------------");
-			studentRepository.deleteById(1L);
 
 
 		};
 	}
 
+	private void testOneToOneMapping(StudentRepository studentRepository,StudentIdCardRepository studentIdCardRepository){
+		Faker faker=new Faker();
+
+
+		String firstName=faker.name().firstName();
+		String lastName=faker.name().lastName();
+		String email=String.format("%s.%s@gmail.com",firstName,lastName);
+		int age=faker.number().numberBetween(18,60);
+		Student student=new Student(firstName,lastName,email,age);
+
+		StudentIdCard studentIdCard=new StudentIdCard("123456789",student);
+
+		System.out.println("Saving the Student with an Id Card");
+
+		student.setStudentIdCard(studentIdCard);
+		studentRepository.save(student);
+//			studentIdCardRepository.save(studentIdCard);
+
+		System.out.println("--- Fetching the Student Id Card Record ---------");
+
+		studentIdCardRepository.findById(1L).
+				ifPresent(System.out::println);
+
+
+		System.out.println("------------------Fetching Student Id---------------------");
+
+		studentRepository.findById(1L)
+				.ifPresent(student1 -> {
+					System.out.println(student1);
+					System.out.println(student1.getStudentIdCard());
+				});
+
+		System.out.println("------------ Deleting Student--------------");
+		studentRepository.deleteById(1L);
+
+
+	}
 	private void generateRandomStudents(StudentRepository repository){
 		Faker faker=new Faker();
 

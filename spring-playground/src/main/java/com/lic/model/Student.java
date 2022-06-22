@@ -1,6 +1,8 @@
 package com.lic.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //Represents the Java class
 @Entity(name="Student")
@@ -61,6 +63,14 @@ public class Student {
     )
     private StudentIdCard studentIdCard;
 
+    @OneToMany(
+            mappedBy = "student",
+            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
+            orphanRemoval = true,
+            fetch =FetchType.LAZY
+    )
+    private List<Book> books=new ArrayList<>();
+
     public Student() {
     }
 
@@ -114,6 +124,8 @@ public class Student {
 
 
 
+//Handling mapping with Student Id Card
+
     public void setStudentIdCard(StudentIdCard studentIdCard) {
         this.studentIdCard = studentIdCard;
     }
@@ -121,6 +133,29 @@ public class Student {
     public StudentIdCard getStudentIdCard() {
         return studentIdCard;
     }
+
+//    Handling Mapping with Books
+
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void addBook(Book book){
+        if(!books.contains(book)){
+            this.books.add(book);
+            book.setStudent(this);
+        }
+    }
+
+    public void removeBook(Book book){
+        if(this.books.contains(book)){
+            this.books.remove(book);
+            book.setStudent(null);
+        }
+    }
+
+
 
     @Override
     public String toString() {

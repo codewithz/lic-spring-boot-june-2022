@@ -57,6 +57,7 @@ public class Student {
             cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             orphanRemoval = true
 
+
     )
     private StudentIdCard studentIdCard;
 

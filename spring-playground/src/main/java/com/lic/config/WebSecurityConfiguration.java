@@ -5,13 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfiguration {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -24,4 +26,22 @@ public class WebSecurityConfiguration {
 
         return provider;
     }
+
+
+    protected  void configure(HttpSecurity http) throws Exception{
+        http.authorizeHttpRequests()
+                .antMatchers("/api/v1/lic/swagger-ui.html")
+                .permitAll()
+                .antMatchers("/api/v1/lic/customers/**")
+                .hasAuthority("USER")
+                .antMatchers("/api/v1/lic/students/**")
+                .hasAuthority("ADMIN")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic();
+
+    }
+
+
 }

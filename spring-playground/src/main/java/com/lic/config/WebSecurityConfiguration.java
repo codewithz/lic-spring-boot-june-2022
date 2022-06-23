@@ -27,14 +27,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-
+    @Override
     protected  void configure(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests()
-                .antMatchers("/api/v1/lic/swagger-ui.html")
+                .antMatchers("/swagger-ui.html")
                 .permitAll()
-                .antMatchers("/api/v1/lic/customers/**")
+                .antMatchers("/customers/**")
                 .hasAuthority("USER")
-                .antMatchers("/api/v1/lic/students/**")
+                .antMatchers("/students/**")
                 .hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()

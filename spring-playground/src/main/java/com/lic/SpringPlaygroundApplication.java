@@ -2,6 +2,7 @@ package com.lic;
 
 import com.github.javafaker.Faker;
 import com.lic.model.*;
+import com.lic.repository.AppUserRepository;
 import com.lic.repository.CourseRepository;
 import com.lic.repository.StudentIdCardRepository;
 import com.lic.repository.StudentRepository;
@@ -28,5 +29,26 @@ public class SpringPlaygroundApplication {
 		SpringApplication.run(SpringPlaygroundApplication.class, args);
 		System.out.println("Test-LIC");
 
+	}
+
+	@Bean
+	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository){
+		return args -> {
+
+			AppUser user1=new AppUser("codewithz",
+					"$2a$12$uu6gNkfj4n0OTFZ1dXC3VuG2FMSW/4S19TqQCSTGrBDIVkWm3wp7i",
+					"USER");
+
+			appUserRepository.save(user1);
+
+			AppUser user2=new AppUser("admin",
+					"$2a$12$20agn2jCwNunVyXyGs8rg.0ZdQVJiuVAvqL3AFuCBe94ptgfM0fgu",
+					"ADMIN");
+
+			appUserRepository.save(user2);
+
+
+
+		};
 	}
 }

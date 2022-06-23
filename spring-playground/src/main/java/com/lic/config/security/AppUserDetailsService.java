@@ -22,7 +22,7 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<AppUser> optional=appUserRepository.findAppUserByUsername(username);
         if(optional.isPresent()){
-            return null;
+            return new AppUserDetails(optional.get());
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
